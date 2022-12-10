@@ -30,9 +30,9 @@ Step5. 確認訊息是否如下
 Express is listening on localhost:3000
 ```
 Step6. 瀏覽器輸入
-  `http://localhost:3000`
+  ```http://localhost:3000```
   
-Step7. 如欲暫停伺服器，請切換至終端機並且`ctrl+c`
+Step7. 如欲暫停伺服器，請切換至終端機並且```ctrl+c```
 
 
 ### 🛠️開發工具
