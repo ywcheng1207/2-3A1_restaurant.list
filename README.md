@@ -13,7 +13,7 @@ Hi! 歡迎參觀~
 
 
 ### 💡操作
-Step1. 確認安裝 node.js 與 npm❗️
+Step1. 確認安裝 node.js 與 npm
 
 Step2. clone
 
