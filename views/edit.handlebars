@@ -1,0 +1,88 @@
+<h1 class='mb-1 restaurant-show-title'>{{restaurant.name}}</h1>
+<div class='container'>
+  <div class='row'>
+    <div class='col-12 col-md-10 mx-auto'>
+      {{!-- <form action='/restaurants/{{restaurant._id}}/edit' method='POST'>
+        <input
+          type='text'
+          value='{{restaurant.category}}'
+          style='width: 35%;'
+          name='category'
+        />
+        <button type='submit'>Save</button>
+      </form> --}}
+      <form action='/restaurants/{{restaurant._id}}/edit' method='POST'>
+        <p class='mb-1'>
+          <span class='text-secondary'>
+            類別：
+          </span>
+          <input
+            type='text'
+            value='{{restaurant.category}}'
+            style='width: 35%;'
+            name='category'
+          />
+        </p>
+        <p class='mb-1'>
+          <span class='text-secondary'>
+            名稱：
+          </span>
+          <input
+            type='text'
+            value='{{restaurant.name}}'
+            style='width: 35%;'
+            name='name'
+          />
+        </p>
+        <p class='mb-1'>
+          <span class='text-secondary'>
+            地址：
+          </span>
+          <input
+            type='text'
+            value='{{restaurant.location}}'
+            style='width: 35%;'
+            name='location'
+          />
+        </p>
+        <p class='mb-1'>
+          <span class='text-secondary'>
+            地圖：
+          </span>
+          <input
+            type='text'
+            value='{{restaurant.google_map}}'
+            style='width: 35%;'
+            name='google_map'
+          />
+        </p>
+
+        <p class='mb-1'>
+          <span class='text-secondary'>
+            電話：
+          </span>
+          <input type='text' value='{{restaurant.phone}}' name='phone' />
+        </p>
+        <p class='d-flex align-items-center'>
+          <span class='text-secondary'>
+            描述：
+          </span>
+          <textarea
+            name='description'
+            id=''
+            cols='70'
+            rows='3'
+            style='resize: none'
+          >{{restaurant.description}}</textarea>
+        </p>
+        <p class='d-flex align-items-center'>
+          <span class='text-secondary'>
+            照片連結：
+          </span>
+          <input type='text' name='image' value='{{restaurant.image}}' />
+        </p>
+        <button type='submit'>Save</button>
+      </form>
+    </div>
+  </div>
+</div>

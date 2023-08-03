@@ -2,6 +2,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 // ----------------------------------------- mongo
@@ -26,11 +27,9 @@ db.once('open', () => {
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
-
+app.use(bodyParser.urlencoded({ extended: true }))
 // ----------------------------------------- data
-// const restaurantList = require('./restaurants.json')
 const Restaurant = require('./models/restaurant')
-const restaurant = require('./models/restaurant')
 
 // ----------------------------------------- routes
 // Read
@@ -56,7 +55,39 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
     .then((restaurant) => res.render('show', { restaurant }))
     .catch((error) => console.log(error))
 })
-
+// Read
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const restaurant_id = req.params.restaurant_id
+  return Restaurant.findById(restaurant_id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant }))
+    .catch((error) => console.log(error))
+})
+// Update
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .then((restaurant) => {
+      restaurant.name = req.body.name
+      restaurant.category = req.body.category
+      restaurant.location = req.body.location
+      restaurant.google_map = req.body.google_map
+      restaurant.phone = req.body.phone
+      restaurant.description = req.body.description
+      restaurant.image = req.body.image
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch((error) => console.log(error))
+})
+// Delete
+app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .then((restaurant) => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
+})
 // start and listen on the Express server
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
