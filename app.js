@@ -50,10 +50,15 @@ app.get('/search', (req, res) => {
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(
-    (restaurant) => restaurant.id.toString() === req.params.restaurant_id
-  )
-  res.render('show', { restaurant: restaurant })
+  // const restaurant = restaurantList.results.find(
+  //   (restaurant) => restaurant.id.toString() === req.params.restaurant_id
+  // )
+  // res.render('show', { restaurant: restaurant })
+  const restaurant_id = req.params.restaurant_id
+  return Restaurant.findById(restaurant_id)
+    .lean()
+    .then((restaurant) => res.render('show', { restaurant }))
+    .catch((error) => console.log(error))
 })
 
 // start and listen on the Express server
