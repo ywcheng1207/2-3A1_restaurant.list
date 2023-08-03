@@ -33,27 +33,23 @@ const Restaurant = require('./models/restaurant')
 const restaurant = require('./models/restaurant')
 
 // ----------------------------------------- routes
+// Read
 app.get('/', (req, res) => {
-  // res.render('index', { restaurants: restaurantList.results })
   Restaurant.find()
     .lean()
     .then((restaurants) => res.render('index', { restaurants }))
     .catch((error) => console.error(error))
 })
-
+// Read
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  const restaurants = restaurantList.results.filter((restaurant) => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurants: restaurants, keyword: keyword })
+  Restaurant.find({ name: { $regex: keyword, $options: 'i' } })
+    .lean()
+    .then((restaurants) => res.render('index', { restaurants, keyword }))
+    .catch((error) => console.error(error))
 })
-
+// Read
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  // const restaurant = restaurantList.results.find(
-  //   (restaurant) => restaurant.id.toString() === req.params.restaurant_id
-  // )
-  // res.render('show', { restaurant: restaurant })
   const restaurant_id = req.params.restaurant_id
   return Restaurant.findById(restaurant_id)
     .lean()
