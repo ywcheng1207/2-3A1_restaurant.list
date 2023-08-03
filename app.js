@@ -88,6 +88,26 @@ app.post('/restaurants/:restaurant_id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
+// Create
+app.get('/restaurant/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurant/new', (req, res) => {
+  return Restaurant.create({
+    name: req.body.name,
+    name_en: req.body.name_en,
+    category: req.body.category,
+    image: req.body.image,
+    location: req.body.location,
+    phone: req.body.phone,
+    google_map: req.body.google_map,
+    rating: req.body.rating,
+    description: req.body.description
+  })
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
+})
 // start and listen on the Express server
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
