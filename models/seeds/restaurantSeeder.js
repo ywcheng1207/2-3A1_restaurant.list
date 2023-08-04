@@ -1,20 +1,8 @@
-const mongoose = require('mongoose')
-const Restaurant = require('../restaurant') // 載入 model
+const Restaurant = require('../restaurant')
 const data = require('../../restaurants.json')
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('mongodb error!')
-})
+const db = require('../../config/mongoose')
 db.once('open', () => {
-  console.log('mongodb connected!')
   for (let i = 0; i < data.results.length; i++) {
     Restaurant.create({
       name: data.results[i].name,
