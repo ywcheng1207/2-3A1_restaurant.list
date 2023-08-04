@@ -3,6 +3,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 const app = express()
 const port = 3000
 // ----------------------------------------- mongo
@@ -28,6 +29,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 // ----------------------------------------- data
 const Restaurant = require('./models/restaurant')
 
@@ -64,24 +66,26 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 // Update
-app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+app.put('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
+  const { name, category, location, google_map, phone, description, image } =
+    req.body
   return Restaurant.findById(id)
     .then((restaurant) => {
-      restaurant.name = req.body.name
-      restaurant.category = req.body.category
-      restaurant.location = req.body.location
-      restaurant.google_map = req.body.google_map
-      restaurant.phone = req.body.phone
-      restaurant.description = req.body.description
-      restaurant.image = req.body.image
+      restaurant.name = name
+      restaurant.category = category
+      restaurant.location = location
+      restaurant.google_map = google_map
+      restaurant.phone = phone
+      restaurant.description = description
+      restaurant.image = image
       return restaurant.save()
     })
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch((error) => console.log(error))
 })
 // Delete
-app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+app.delete('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
     .then((restaurant) => restaurant.remove())
@@ -94,16 +98,27 @@ app.get('/restaurant/new', (req, res) => {
 })
 
 app.post('/restaurant/new', (req, res) => {
+  const {
+    name,
+    name_en,
+    category,
+    location,
+    google_map,
+    phone,
+    description,
+    rating,
+    image
+  } = req.body
   return Restaurant.create({
-    name: req.body.name,
-    name_en: req.body.name_en,
-    category: req.body.category,
-    image: req.body.image,
-    location: req.body.location,
-    phone: req.body.phone,
-    google_map: req.body.google_map,
-    rating: req.body.rating,
-    description: req.body.description
+    name: name,
+    name_en: name_en,
+    category: category,
+    image: image,
+    location: location,
+    phone: phone,
+    google_map: google_map,
+    rating: rating,
+    description: description
   })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
